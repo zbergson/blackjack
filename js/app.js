@@ -11,6 +11,10 @@ var playerCards = document.getElementById('player-cards');
 var hitButton = document.createElement('button');
 var standButton = document.createElement('button');
 var pot = document.getElementById('pot');
+var playerStackValue;
+var dealerStackValue;
+var playerCardsStart;
+var dealerCardsStart;
 
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -59,12 +63,15 @@ dealButton.onclick = function() {
 	var removeForPlayer2 = cards.pop();
 	playerStack = [removeForPlayer1, removeForPlayer2];
 
-	playerCards.innerHTML = playerStack[0]['name'] + " " + playerStack[1]['name'];
+	playerCardsStart = playerStack[0]['name'] + " " + playerStack[1]['name'];
+	playerCards.innerHTML = playerCardsStart;
 
 	var removeForDealer1 = cards.pop();
 	var removeForDealer2 = cards.pop();
 	dealerStack = [removeForDealer1, removeForDealer2];
-	dealerCards.innerHTML = dealerStack[0]['name'] + " " + dealerStack[1]['name'];
+	dealerCardsStart = dealerStack[0]['name'];
+	dealerCards.innerHTML = dealerCardsStart;
+	dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'];
 
 	//remove dealButton and add hit & stand buttons
 
@@ -78,10 +85,16 @@ dealButton.onclick = function() {
 	standButton.innerHTML = "stand";
 	pot.appendChild(standButton);
 
+	playerStackValue = playerStack[0]['value'] + playerStack[1]['value'];
+
 	//check if playerhand is equal to 21. If it is, stop the game and player wins.
 
-	if ((playerStack[0]['value'] + playerStack[0]['value']) === 21) {
+	if (playerStackValue === 21) {
 		alert("player wins!!");
+	}
+
+	if (dealerStackValue === 21) {
+		alert('dealer wins');
 	}
 
 	else {
@@ -96,20 +109,87 @@ dealButton.onclick = function() {
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 var chooseHitOrStand = function() {
+	//need to make a for loop for all clicks on hitbutton. Will do tomorrow during class. refer to tic tac toe for reference.
+
 	hitButton.onclick = function() {
 		var removeforPlayer3 = cards.pop();
 		playerStack.push(removeforPlayer3);
-		playerCards.innerHTML = playerStack[0]['name'] + " " + playerStack[1]['name'] + " " + playerStack[2]['name'];
-		
-		if ((playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value']) === 21) {
-			alert("player wins!!");
+	
+		playerCardsStart = playerCardsStart + " " + playerStack[playerStack.length - 1]['name'];
+		playerCards.innerHTML = playerCardsStart;
+
+		playerStackValue = playerStackValue +  playerStack[playerStack.length - 1]['value'];
+
+		if (playerStackValue > 21) {
+			alert('player busts!');
 		}
-		else if ((playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value']) < 21) {
-			alert("continue");
+
+		else if (playerStackValue === 21) {
+			alert('player wins');
 		}
+
 		else {
-			alert('you lose');
+			chooseHitOrStand();
 		}
+	}
+
+	standButton.onclick = function() {
+		console.log('hi');
+		if (playerStackValue > 21) {
+			alert('player busts!');
+		}
+
+		else if (dealerStackValue < 17) {
+			var removeForDealer3 = cards.pop();
+			dealerStack.push(removeForDealer3);
+			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'] + " " + dealerStack[dealerStack.length - 1]['name'];
+			dealerCards.innerHTML = dealerCardsStart;
+			dealerStackValue = dealerStackValue + dealerStack[2]['value'];
+
+			if (dealerStackValue > 21) {
+				alert('dealer busts');
+			}
+
+			else {
+				checkForWin();
+			}
+		}
+
+		else if (dealerStackValue > 17) {
+			var removeForDealer3 = cards.pop();
+			dealerStack.push(removeForDealer3);
+			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'];
+			dealerCards.innerHTML = dealerCardsStart;
+			if (dealerStackValue === 21) {
+				alert('dealer wins');
+			}
+
+			else {
+				checkForWin();
+			}
+		}
+	}	
+}
+
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::::::::Check for winner:::::::::::::::::::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+var checkForWin = function() {
+
+	if (playerStackValue === 21) {
+			console.log('player wins');
+	}
+	else if ((21 - playerStackValue) > (21 - dealerStackValue)) {
+			alert('dealer wins!')
+	}
+
+	else if ((21 - playerStackValue) < (21 - dealerStackValue))  {
+			alert('player wins!');
+	}
+
+	else {
+		alert('draw');
 	}
 }
 
