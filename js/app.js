@@ -53,6 +53,7 @@ var deck = function() {
 
     shuffle(cards);
 }
+deck();
 
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -63,7 +64,7 @@ var deck = function() {
 //when user clicks deal, we need to pop() from cards array and stick it into a new array for player & dealer
 betForm.onsubmit = function(event) {	
 	event.preventDefault();
-	pot.innerHTML = "You have $1000. Your current bet is $" + amount.value + ". Click deal to begin!";
+	pot.innerHTML = "Your current bet is $" + amount.value + ". Click deal to begin!";
 	betForm.setAttribute('style', 'display: none');
 	dealButton.setAttribute('id', 'deal');
 	dealButton.innerHTML = "Deal";
@@ -72,7 +73,7 @@ betForm.onsubmit = function(event) {
 		dealButton.onclick = function() {
 			// startingPot = 1000;
 
-			deck();
+			
 			var removeForPlayer1 = cards.pop();
 			var removeForPlayer2 = cards.pop();
 			playerStack = [removeForPlayer1, removeForPlayer2];
@@ -104,19 +105,29 @@ betForm.onsubmit = function(event) {
 
 			//check if playerhand is equal to 21. If it is, stop the game and player wins.
 
-			if (playerStackValue === 21) {
-				playerOutcome = startingPot[0] + parseInt(amount.value);
-				moneyLeft.innerHTML = playerOutcome;
-				console.log("player wins!!");
-				restart();
+			if (playerStackValue === 21 && dealerStackValue !== 21) {
+				dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
+				dealerCards.innerHTML = dealerCardsStart;
+				playerWins();
+				
 			}
 
-			if (dealerStackValue === 21) {
-				console.log('dealer wins');
-				playerOutcome = startingPot[0] - parseInt(amount.value);
-				moneyLeft.innerHTML = playerOutcome;
-				restart();
+			if (playerStackValue === 21 && dealerStackValue === 21) {
+				dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
+				dealerCards.innerHTML = dealerCardsStart;
+				drawOutcome();	
 			}
+
+			if (playerStackValue > 21) {
+				dealerWins();
+			}
+
+			// if (dealerStackValue === 21) {
+			// 	console.log('dealer wins');
+			// 	playerOutcome = startingPot[0] - parseInt(amount.value);
+			// 	moneyLeft.innerHTML = playerOutcome;
+			// 	restart();
+			// }
 
 			else {
 				chooseHitOrStand();
@@ -143,16 +154,20 @@ var chooseHitOrStand = function() {
 		playerStackValue = playerStackValue +  playerStack[playerStack.length - 1]['value'];
 
 		if (playerStackValue > 21) {
-			playerOutcome = startingPot[0] - parseInt(amount.value);
-			moneyLeft.innerHTML = playerOutcome;
-			console.log('player busts!');
-			restart();
+			dealerWins();
 		}
 
-		else if (playerStackValue === 21) {
-			playerOutcome = startingPot[0] - parseInt(amount.value);
-			moneyLeft.innerHTML = playerOutcome;
-			restart();
+		else if (playerStackValue === 21 && dealerStackValue !== 21) {
+
+			dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
+			dealerCards.innerHTML = dealerCardsStart;
+			playerWins();
+		}
+
+		else if (playerStackValue === 21 && dealerStackValue === 21) {
+			dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
+			dealerCards.innerHTML = dealerCardsStart;
+			drawOutcome();
 		}
 
 		// else {
@@ -161,14 +176,14 @@ var chooseHitOrStand = function() {
 	}
 
 	standButton.onclick = function() {
-		console.log('hi');
-		if (playerStackValue > 21) {
-			playerOutcome = startingPot[0] - parseInt(amount.value);
-			moneyLeft.innerHTML = playerOutcome;
-			// alert('player busts!');
-		}
+		// console.log('hi');
+		// if (playerStackValue > 21) {
+		// 	playerOutcome = startingPot[0] - parseInt(amount.value);
+		// 	moneyLeft.innerHTML = playerOutcome;
+		// 	// alert('player busts!');
+		// }
 
-		else if (dealerStackValue < 17) {
+		if (dealerStackValue < 17) {
 			var removeForDealer3 = cards.pop();
 			dealerStack.push(removeForDealer3);
 			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'] + " " + dealerStack[dealerStack.length - 1]['name'];
@@ -176,10 +191,7 @@ var chooseHitOrStand = function() {
 			dealerStackValue = dealerStackValue + dealerStack[2]['value'];
 
 			if (dealerStackValue > 21) {
-				playerOutcome = startingPot[0] + parseInt(amount.value);
-				moneyLeft.innerHTML = playerOutcome;
-				console.log('dealer busts');
-				restart();
+				playerWins();
 			}
 
 			else {
@@ -192,11 +204,8 @@ var chooseHitOrStand = function() {
 			dealerStack.push(removeForDealer3);
 			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'];
 			dealerCards.innerHTML = dealerCardsStart;
-			if (dealerStackValue === 21) {
-				playerOutcome = startingPot[0] - parseInt(amount.value);
-				moneyLeft.innerHTML = playerOutcome;
-				console.log('dealer wins');
-				restart();
+			if (dealerStackValue === 21 && playerStackValue !== 21) {
+				dealerWins();
 			}
 
 			else {
@@ -212,41 +221,62 @@ var chooseHitOrStand = function() {
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 var checkForWin = function() {
-playerWins = startingPot + parseInt(amount.value);
-playerLoses = startingPot - parseInt(amount.value);
+// playerWins = startingPot + parseInt(amount.value);
+// playerLoses = startingPot - parseInt(amount.value);
 
 	if (playerStackValue === 21) {
-			playerOutcome = startingPot[0] + parseInt(amount.value);
-			moneyLeft.innerHTML = playerOutcome;
-			restart();
+		playerWins();
 	}
 	else if ((21 - playerStackValue) > (21 - dealerStackValue)) {
-			playerOutcome = startingPot[0] - parseInt(amount.value);
-			moneyLeft.innerHTML = playerOutcome;
-			console.log('dealer wins!')
-			restart();
+		dealerWins();
 	}
 
 	else if ((21 - playerStackValue) < (21 - dealerStackValue))  {
-			playerOutcome = startingPot[0] + parseInt(amount.value);
-			moneyLeft.innerHTML = playerOutcome;
-			console.log('player wins!');
-			restart();
+		playerWins();
 	}
 
 	else {
-		console.log('draw');
-		restart();
+		drawOutcome();
 	}
 
+}
+
+var playerWins = function() {
+	playerOutcome = startingPot[0] + parseInt(amount.value);
+	moneyLeft.innerHTML = playerOutcome;
+	console.log('player wins!');
+	restart();
+}
+
+var dealerWins = function() {
+	playerOutcome = startingPot[0] - parseInt(amount.value);
+	moneyLeft.innerHTML = playerOutcome;
+	console.log('dealer wins!')
+	restart();
+}
+
+var drawOutcome = function() {
+	playerOutcome = startingPot[0];
+	moneyLeft.innerHTML = playerOutcome;
+	console.log('draw');
+	restart();
 }
 
 var restart = function() {
 
 	if (playerOutcome > 0) {
-		betForm.setAttribute('style', 'display: block');
-		startingPot.pop();
-		startingPot.push(playerOutcome);
+		setTimeout(function(){
+
+			betForm.setAttribute('style', 'display: block');
+			pot.removeChild(hitButton);
+			pot.removeChild(standButton);
+			startingPot.pop();
+			startingPot.push(playerOutcome);
+			amount.value = "";
+			playerCards.innerHTML = "";
+			dealerCards.innerHTML = "";
+			console.log('howwwwdddyyyy');
+		},5000);
 
 	}
 	else if (playerOutcome <= 0) {
@@ -255,6 +285,12 @@ var restart = function() {
 
 	else {
 		betForm.setAttribute('style', 'display: block');
+		pot.removeChild(hitButton);
+		pot.removeChild(standButton);
+		amount.value = "";
+		dealerCards.innerHTML = "";
+		playerCards.innerHTML = "";
+
 	}
 }
 
