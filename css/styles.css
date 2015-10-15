@@ -20,6 +20,11 @@ body {
 	top: 40px;
 }
 
+#pot {
+	position: relative;
+	text-align: center;
+}
+
 #begin {
 	position: relative;
 	width: 50%;
@@ -50,19 +55,29 @@ body {
 }
 
 #deal {
+/*	margin-right: auto;
+	margin-left: auto;*/
+	position: relative;
+	right: 45px;
+	top: 30px;
+}
+
+form {
 	margin-right: auto;
 	margin-left: auto;
 	position: relative;
-	left: 280px;
+	left: 220px;
 }
 
 .hit {
 	position: relative;
-	left: 190px;
-	top: 20px;
+	/*left: 190px;*/
+	top: 30px;
+	right: 210px;
 }
 .stand {
 	position: relative;
-	left: 200px;
-	top: 20px;
+	/*left: 200px;*/
+	top: 30px;
+	right: 200px;
 }
