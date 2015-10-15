@@ -1,0 +1,68 @@
+body {
+	background-color: black;
+}
+
+#table {
+	width: 1000px;
+	height: 700px;
+	margin-left: auto;
+	margin-right: auto;
+	background-image: url('../images/blackjack-background.jpg');
+	background-size: cover;
+	margin-top: -20px;
+}
+
+#container {
+	position: relative;
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	top: 40px;
+}
+
+#begin {
+	position: relative;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+	display: inline-block;
+}
+
+
+#dealer-cards {
+	width: 200px;
+	height: 150px;
+	border: 1px solid;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	top: 20px;
+}
+
+#player-cards {
+	width: 200px;
+	height: 150px;
+	border: 1px solid;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	top: 30px;
+}
+
+#deal {
+	margin-right: auto;
+	margin-left: auto;
+	position: relative;
+	left: 280px;
+}
+
+.hit {
+	position: relative;
+	left: 190px;
+	top: 20px;
+}
+.stand {
+	position: relative;
+	left: 200px;
+	top: 20px;
+}
