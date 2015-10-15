@@ -17,9 +17,9 @@ var dealerStackValue;
 var playerCardsStart;
 var dealerCardsStart;
 var amount = document.getElementById('amount');
-var startingPot = 1000;
-var playerWins;
-var playerLoses;
+var startingPot = [1000];
+var playerOutcome;
+var moneyLeft = document.getElementById('money');
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //::::::::::::::::::::::::::::Create my deck & shuffle it::::::::::::::::::::::::::::::::::::::::::::::
@@ -63,15 +63,14 @@ var deck = function() {
 //when user clicks deal, we need to pop() from cards array and stick it into a new array for player & dealer
 betForm.onsubmit = function(event) {	
 	event.preventDefault();
-	pot.innerHTML = "You have $" + startingPot +  " Your current bet is $" + amount.value + ". Click deal to begin!";
+	pot.innerHTML = "You have $1000. Your current bet is $" + amount.value + ". Click deal to begin!";
 	betForm.setAttribute('style', 'display: none');
 	dealButton.setAttribute('id', 'deal');
 	dealButton.innerHTML = "Deal";
 	pot.appendChild(dealButton);
 
 		dealButton.onclick = function() {
-			playerWins = "You now have $" + (startingPot + parseInt(amount.value)) + ".";
-			playerLoses = "You now have $" + (startingPot - parseInt(amount.value)) + ".";
+			// startingPot = 1000;
 
 			deck();
 			var removeForPlayer1 = cards.pop();
@@ -106,14 +105,16 @@ betForm.onsubmit = function(event) {
 			//check if playerhand is equal to 21. If it is, stop the game and player wins.
 
 			if (playerStackValue === 21) {
-				pot.innerHTML = playerWins;
+				playerOutcome = startingPot[0] + parseInt(amount.value);
+				moneyLeft.innerHTML = playerOutcome;
 				console.log("player wins!!");
 				restart();
 			}
 
 			if (dealerStackValue === 21) {
 				console.log('dealer wins');
-				pot.innerHTML = playerLoses;
+				playerOutcome = startingPot[0] - parseInt(amount.value);
+				moneyLeft.innerHTML = playerOutcome;
 				restart();
 			}
 
@@ -130,8 +131,7 @@ betForm.onsubmit = function(event) {
 
 var chooseHitOrStand = function() {
 	//need to make a for loop for all clicks on hitbutton. Will do tomorrow during class. refer to tic tac toe for reference.
-playerWins = "You now have $" + (startingPot + parseInt(amount.value)) + ".";
-playerLoses = "You now have $" + (startingPot - parseInt(amount.value)) + ".";
+
 
 	hitButton.onclick = function() {
 		var removeforPlayer3 = cards.pop();
@@ -143,13 +143,15 @@ playerLoses = "You now have $" + (startingPot - parseInt(amount.value)) + ".";
 		playerStackValue = playerStackValue +  playerStack[playerStack.length - 1]['value'];
 
 		if (playerStackValue > 21) {
-			pot.innerHTML = playerLoses;
+			playerOutcome = startingPot[0] - parseInt(amount.value);
+			moneyLeft.innerHTML = playerOutcome;
 			console.log('player busts!');
 			restart();
 		}
 
 		else if (playerStackValue === 21) {
-			pot.innerHTML = playerWins;
+			playerOutcome = startingPot[0] - parseInt(amount.value);
+			moneyLeft.innerHTML = playerOutcome;
 			restart();
 		}
 
@@ -161,7 +163,8 @@ playerLoses = "You now have $" + (startingPot - parseInt(amount.value)) + ".";
 	standButton.onclick = function() {
 		console.log('hi');
 		if (playerStackValue > 21) {
-			pot.innerHTML = playerLoses;
+			playerOutcome = startingPot[0] - parseInt(amount.value);
+			moneyLeft.innerHTML = playerOutcome;
 			// alert('player busts!');
 		}
 
@@ -173,7 +176,8 @@ playerLoses = "You now have $" + (startingPot - parseInt(amount.value)) + ".";
 			dealerStackValue = dealerStackValue + dealerStack[2]['value'];
 
 			if (dealerStackValue > 21) {
-				pot.innerHTML = playerWins;
+				playerOutcome = startingPot[0] + parseInt(amount.value);
+				moneyLeft.innerHTML = playerOutcome;
 				console.log('dealer busts');
 				restart();
 			}
@@ -189,7 +193,8 @@ playerLoses = "You now have $" + (startingPot - parseInt(amount.value)) + ".";
 			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'];
 			dealerCards.innerHTML = dealerCardsStart;
 			if (dealerStackValue === 21) {
-				pot.innerHTML = playerLoses;
+				playerOutcome = startingPot[0] - parseInt(amount.value);
+				moneyLeft.innerHTML = playerOutcome;
 				console.log('dealer wins');
 				restart();
 			}
@@ -207,21 +212,24 @@ playerLoses = "You now have $" + (startingPot - parseInt(amount.value)) + ".";
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 var checkForWin = function() {
-playerWins = "You now have $" + (startingPot + parseInt(amount.value)) + ".";
-playerLoses = "You now have $" + (startingPot - parseInt(amount.value)) + ".";
+playerWins = startingPot + parseInt(amount.value);
+playerLoses = startingPot - parseInt(amount.value);
 
 	if (playerStackValue === 21) {
-			pot.innerHTML = playerWins;
+			playerOutcome = startingPot[0] + parseInt(amount.value);
+			moneyLeft.innerHTML = playerOutcome;
 			restart();
 	}
 	else if ((21 - playerStackValue) > (21 - dealerStackValue)) {
-			pot.innerHTML = playerLoses;
+			playerOutcome = startingPot[0] - parseInt(amount.value);
+			moneyLeft.innerHTML = playerOutcome;
 			console.log('dealer wins!')
 			restart();
 	}
 
 	else if ((21 - playerStackValue) < (21 - dealerStackValue))  {
-			pot.innerHTML = playerWins;
+			playerOutcome = startingPot[0] + parseInt(amount.value);
+			moneyLeft.innerHTML = playerOutcome;
 			console.log('player wins!');
 			restart();
 	}
@@ -235,20 +243,18 @@ playerLoses = "You now have $" + (startingPot - parseInt(amount.value)) + ".";
 
 var restart = function() {
 
-	if (pot.innerHTML === playerWins) {
+	if (playerOutcome > 0) {
 		betForm.setAttribute('style', 'display: block');
-	}
+		startingPot.pop();
+		startingPot.push(playerOutcome);
 
-	else if ((startingPot - parseInt(amount.value)) > 0 ) {
-		betForm.setAttribute('style', 'display: block');
 	}
-
-	else if (!(pot.innerHTML === playerLoses) && !(pot.innerHTML === playerLoses)) {
-		betForm.setAttribute('style', 'display: block');
+	else if (playerOutcome <= 0) {
+		alert("You're out of cash");
 	}
 
 	else {
-		alert("You're out of cash :(");
+		betForm.setAttribute('style', 'display: block');
 	}
 }
 
