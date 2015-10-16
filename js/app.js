@@ -20,6 +20,8 @@ var amount = document.getElementById('amount');
 var startingPot = [1000];
 var playerOutcome;
 var moneyLeft = document.getElementById('money');
+var quitButton = document.getElementById('quit');
+var doubleDown = document.createElement('button');
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //::::::::::::::::::::::::::::Create my deck & shuffle it::::::::::::::::::::::::::::::::::::::::::::::
@@ -64,6 +66,10 @@ deck();
 //when user clicks deal, we need to pop() from cards array and stick it into a new array for player & dealer
 betForm.onsubmit = function(event) {	
 	event.preventDefault();
+	if (amount.value > startingPot[0]) {
+		alert("You don't have that much! Enter in a different value.")
+		return false;
+	}
 	pot.innerHTML = "Your current bet is $" + amount.value + ". Click deal to begin!";
 	betForm.setAttribute('style', 'display: none');
 	dealButton.setAttribute('id', 'deal');
@@ -71,8 +77,6 @@ betForm.onsubmit = function(event) {
 	pot.appendChild(dealButton);
 
 		dealButton.onclick = function() {
-			// startingPot = 1000;
-
 			
 			var removeForPlayer1 = cards.pop();
 			var removeForPlayer2 = cards.pop();
@@ -90,16 +94,20 @@ betForm.onsubmit = function(event) {
 
 			//remove dealButton and add hit & stand buttons
 			pot.removeChild(dealButton);
-			pot.innerHTML = "You have $1,000. Your current bet is $" + amount.value + "."
+			pot.innerHTML = "Your current bet is $" + amount.value + "."
 			
 
 			hitButton.setAttribute('class', 'hit');
-			hitButton.innerHTML = "hit";
+			hitButton.innerHTML = "Hit";
 			pot.appendChild(hitButton);
 
 			standButton.setAttribute('class', 'stand');
-			standButton.innerHTML = "stand";
+			standButton.innerHTML = "Stand";
 			pot.appendChild(standButton);
+
+			doubleDown.setAttribute('class', 'double-down');
+			doubleDown.innerHTML = "Double Down";
+			pot.appendChild(doubleDown);
 
 			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'];
 
@@ -122,13 +130,6 @@ betForm.onsubmit = function(event) {
 				dealerWins();
 			}
 
-			// if (dealerStackValue === 21) {
-			// 	console.log('dealer wins');
-			// 	playerOutcome = startingPot[0] - parseInt(amount.value);
-			// 	moneyLeft.innerHTML = playerOutcome;
-			// 	restart();
-			// }
-
 			else {
 				chooseHitOrStand();
 			}
@@ -137,12 +138,67 @@ betForm.onsubmit = function(event) {
 }
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-//::::::::::::::::::::::::::::::::::::::Choose to hit or stand:::::::::::::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::::::::Choose to hit, stand or double down:::::::::::::::::::::::::::::::::
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 var chooseHitOrStand = function() {
-	//need to make a for loop for all clicks on hitbutton. Will do tomorrow during class. refer to tic tac toe for reference.
 
+	doubleDown.onclick = function() {
+		var removeforPlayer3 = cards.pop();
+		playerStack.push(removeforPlayer3);
+		playerCardsStart = playerCardsStart + " " + playerStack[playerStack.length - 1]['name'];
+		playerCards.innerHTML = playerCardsStart;
+		playerStackValue = playerStackValue +  playerStack[playerStack.length - 1]['value'];
+
+		if (playerStackValue > 21) {
+			dealerWins();
+
+		}
+
+		else if (playerStackValue === 21 && dealerStackValue !== 21) {
+
+			dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
+			dealerCards.innerHTML = dealerCardsStart;
+			playerWins();
+		}
+
+		else if (playerStackValue === 21 && dealerStackValue === 21) {
+			dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
+			dealerCards.innerHTML = dealerCardsStart;
+			drawOutcome();
+		}
+
+		else if (dealerStackValue < 17) {
+			var removeForDealer3 = cards.pop();
+			dealerStack.push(removeForDealer3);
+			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'] + " " + dealerStack[dealerStack.length - 1]['name'];
+			dealerCards.innerHTML = dealerCardsStart;
+			dealerStackValue = dealerStackValue + dealerStack[2]['value'];
+
+			if (dealerStackValue > 21) {
+				playerWins();
+			}
+
+			else {
+				checkForWin();
+			}
+		}
+
+		else if (dealerStackValue >= 17) {
+			var removeForDealer3 = cards.pop();
+			dealerStack.push(removeForDealer3);
+			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'];
+			dealerCards.innerHTML = dealerCardsStart;
+			if (dealerStackValue === 21 && playerStackValue !== 21) {
+				dealerWins();
+			}
+
+			else {
+				checkForWin();
+			}
+		}
+
+	}
 
 	hitButton.onclick = function() {
 		var removeforPlayer3 = cards.pop();
@@ -169,20 +225,9 @@ var chooseHitOrStand = function() {
 			dealerCards.innerHTML = dealerCardsStart;
 			drawOutcome();
 		}
-
-		// else {
-		// 	chooseHitOrStand();
-		// }
 	}
 
 	standButton.onclick = function() {
-		// console.log('hi');
-		// if (playerStackValue > 21) {
-		// 	playerOutcome = startingPot[0] - parseInt(amount.value);
-		// 	moneyLeft.innerHTML = playerOutcome;
-		// 	// alert('player busts!');
-		// }
-
 		if (dealerStackValue < 17) {
 			var removeForDealer3 = cards.pop();
 			dealerStack.push(removeForDealer3);
@@ -244,23 +289,27 @@ var checkForWin = function() {
 var playerWins = function() {
 	playerOutcome = startingPot[0] + parseInt(amount.value);
 	moneyLeft.innerHTML = playerOutcome;
-	console.log('player wins!');
+	alert('player wins!');
 	restart();
 }
 
 var dealerWins = function() {
 	playerOutcome = startingPot[0] - parseInt(amount.value);
 	moneyLeft.innerHTML = playerOutcome;
-	console.log('dealer wins!')
+	alert('dealer wins!');
 	restart();
 }
 
 var drawOutcome = function() {
 	playerOutcome = startingPot[0];
 	moneyLeft.innerHTML = playerOutcome;
-	console.log('draw');
+	alert('Draw!');
 	restart();
 }
+
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::::::::Restart the Game!::::::::::::::::::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 var restart = function() {
 
@@ -270,6 +319,7 @@ var restart = function() {
 			betForm.setAttribute('style', 'display: block');
 			pot.removeChild(hitButton);
 			pot.removeChild(standButton);
+			pot.innerHTML = "Enter your bet!";
 			startingPot.pop();
 			startingPot.push(playerOutcome);
 			amount.value = "";
@@ -291,6 +341,18 @@ var restart = function() {
 		dealerCards.innerHTML = "";
 		playerCards.innerHTML = "";
 
+	}
+}
+
+quitButton.onclick = function() {
+	var decide = prompt("Do you want to restart your game?");
+
+	if(decide === "yes" || decide === "Yes") {
+		location.reload();
+	}
+
+	else if (decide === "no" || decide === "No") {
+		alert('Awesome! Best of luck!');
 	}
 }
 
