@@ -221,7 +221,8 @@ var chooseHitOrStand = function() {
 		}
 
 		else if (dealerStackValue < 17) {
-		
+			var removeForDealer3 = cards.pop();
+			dealerStack.push(removeForDealer3);
 			dealerCards.appendChild(dealerSecondCard);
 			dealerSecondCard.innerHTML = dealerStack[1]['name'];
 			dealerCards.appendChild(dealerThirdCard);
@@ -378,6 +379,11 @@ var checkForWin = function() {
 	if (playerStackValue === 21) {
 		playerWins();
 	}
+
+	else if (dealerStackValue === 21) {
+		dealerWins();
+	}
+
 	else if (((21 - playerStackValue) > (21 - dealerStackValue)) && !(21 - dealerStackValue <= 0)) {
 		dealerWins();
 	}
@@ -394,6 +400,10 @@ var checkForWin = function() {
 var checkForWinDoubleDown = function() {
 	if (playerStackValue === 21) {
 		playerWinsDouble();
+	}
+
+	else if (dealerStackValue === 21) {
+		dealerWinsDouble();
 	}
 	else if ((21 - playerStackValue) > (21 - dealerStackValue)) {
 		dealerWinsDouble();
@@ -496,16 +506,6 @@ quitButton.onclick = function() {
 		alert('Awesome! Best of luck!');
 	}
 }
-
-// var appendNewCards = function() {
-// 		for (i = 0; i < dealerStack.length; i++) {
-// 				dealerCards.appendChild(newCard);
-// 				newCard.setAttribute('class','card');
-// 				var newCardArray = document.querySelectorAll('.card');
-// 				newCardArray[1].innerHTML = dealerStack[1]['name'];
-// 				newCardArray[2].innerHTML = dealerStack[2]['name'];
-// 			}
-// }
 
 
 
