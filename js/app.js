@@ -8,6 +8,7 @@ var container = document.getElementById('container')
 var playerStack;
 var dealerStack;
 var dealerCards = document.getElementById('dealer-cards');
+var dealerCardsArray = document.querySelectorAll('#dealer-cards');
 var playerCards = document.getElementById('player-cards');
 var hitButton = document.createElement('button');
 var standButton = document.createElement('button');
@@ -22,6 +23,27 @@ var playerOutcome;
 var moneyLeft = document.getElementById('money');
 var quitButton = document.getElementById('quit');
 var doubleDown = document.createElement('button');
+var insuranceButton = document.createElement('button');
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::Global stuff of cards::::::::::::::::::::::::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+var dealerFirstCard = document.createElement('div');
+dealerFirstCard.setAttribute('class', 'card');
+var dealerSecondCard = document.createElement('div');
+dealerSecondCard.setAttribute('class', 'card');
+var dealerThirdCard = document.createElement('div');
+dealerThirdCard.setAttribute('class', 'card');
+var playerFirstCard = document.createElement('div');
+playerFirstCard.setAttribute('class', 'card');
+var playerSecondCard = document.createElement('div');
+playerSecondCard.setAttribute('class', 'card');
+var playerThirdCard = document.createElement('div');
+playerThirdCard.setAttribute('class', 'card');
+var playerFourthCard = document.createElement('div');
+playerFourthCard.setAttribute('class', 'card');
+var playerFifthCard = document.createElement('div');
+playerFifthCard.setAttribute('class', 'card');
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //::::::::::::::::::::::::::::Create my deck & shuffle it::::::::::::::::::::::::::::::::::::::::::::::
@@ -43,7 +65,7 @@ var shuffle = function(cards){
 
 var deck = function() {
 	this.names = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-	this.suits = ['Hearts','Diamonds','Spades','Clubs'];
+	this.suits = ['♥','♦','♠','♣'];
 	this.values = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10];
 	
     
@@ -70,6 +92,17 @@ betForm.onsubmit = function(event) {
 		alert("You don't have that much! Enter in a different value.")
 		return false;
 	}
+
+	if (amount.value === "") {
+		alert("You must place a minimum bet of 50!");
+		return false;
+	}
+
+	if (startingPot > 50 && amount.value < 50 ) {
+		alert("You must place a minimum bet of 50!");
+		return false;
+	}
+
 	pot.innerHTML = "Your current bet is $" + amount.value + ". Click deal to begin!";
 	betForm.setAttribute('style', 'display: none');
 	dealButton.setAttribute('id', 'deal');
@@ -82,14 +115,17 @@ betForm.onsubmit = function(event) {
 			var removeForPlayer2 = cards.pop();
 			playerStack = [removeForPlayer1, removeForPlayer2];
 
-			playerCardsStart = playerStack[0]['name'] + " " + playerStack[1]['name'];
-			playerCards.innerHTML = playerCardsStart;
+			playerCards.appendChild(playerFirstCard);
+			playerFirstCard.innerHTML = playerStack[0]['name'];
+			playerCards.appendChild(playerSecondCard);
+			playerSecondCard.innerHTML = playerStack[1]['name'];
 
 			var removeForDealer1 = cards.pop();
 			var removeForDealer2 = cards.pop();
 			dealerStack = [removeForDealer1, removeForDealer2];
 			dealerCardsStart = dealerStack[0]['name'];
-			dealerCards.innerHTML = dealerCardsStart;
+			dealerCards.appendChild(dealerFirstCard);
+			dealerFirstCard.innerHTML = dealerCardsStart;
 			dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'];
 
 			//remove dealButton and add hit & stand buttons
@@ -111,18 +147,34 @@ betForm.onsubmit = function(event) {
 
 			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'];
 
-			//check if playerhand is equal to 21. If it is, stop the game and player wins.
+			if (dealerStack[0]['name'] === "A") {
+				insuranceButton.setAttribute('class', 'insurance');
+				pot.appendChild(insuranceButton);
+				insuranceButton.innerHTML = "Insurance";
+					insuranceButton.onclick = function() {
+						dealerCards.appendChild(dealerSecondCard);
+						dealerSecondCard.innerHTML = dealerStack[1]['name'];
+
+						if (dealerStackValue === 21) {
+							playerWinsDouble();
+						}
+
+						else if (dealerStackValue > 21 || dealerStackValue < 21) {
+							dealerWinsDouble();
+						}
+					}
+			}
 
 			if (playerStackValue === 21 && dealerStackValue !== 21) {
-				dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
-				dealerCards.innerHTML = dealerCardsStart;
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
 				playerWins();
 				
 			}
 
 			if (playerStackValue === 21 && dealerStackValue === 21) {
-				dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
-				dealerCards.innerHTML = dealerCardsStart;
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
 				drawOutcome();	
 			}
 
@@ -146,34 +198,35 @@ var chooseHitOrStand = function() {
 	doubleDown.onclick = function() {
 		var removeforPlayer3 = cards.pop();
 		playerStack.push(removeforPlayer3);
-		playerCardsStart = playerCardsStart + " " + playerStack[playerStack.length - 1]['name'];
-		playerCards.innerHTML = playerCardsStart;
-		playerStackValue = playerStackValue +  playerStack[playerStack.length - 1]['value'];
+		playerCards.appendChild(playerThirdCard);
+		playerThirdCard.innerHTML = playerStack[2]['name'];
+
+		playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'];
 
 		if (playerStackValue > 21) {
 			dealerWinsDouble();
-
 		}
 
 		else if (playerStackValue === 21 && dealerStackValue !== 21) {
 
-			dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
-			dealerCards.innerHTML = dealerCardsStart;
+			dealerCards.appendChild(dealerSecondCard);
+			dealerSecondCard.innerHTML = dealerStack[1]['name'];
 			playerWinsDouble();
 		}
 
 		else if (playerStackValue === 21 && dealerStackValue === 21) {
-			dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
-			dealerCards.innerHTML = dealerCardsStart;
+			dealerCards.appendChild(dealerSecondCard);
+			dealerSecondCard.innerHTML = dealerStack[1]['name'];
 			drawOutcome();
 		}
 
 		else if (dealerStackValue < 17) {
-			var removeForDealer3 = cards.pop();
-			dealerStack.push(removeForDealer3);
-			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'] + " " + dealerStack[dealerStack.length - 1]['name'];
-			dealerCards.innerHTML = dealerCardsStart;
-			dealerStackValue = dealerStackValue + dealerStack[2]['value'];
+		
+			dealerCards.appendChild(dealerSecondCard);
+			dealerSecondCard.innerHTML = dealerStack[1]['name'];
+			dealerCards.appendChild(dealerThirdCard);
+			dealerThirdCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+			dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'];
 
 			if (dealerStackValue > 21) {
 				playerWinsDouble();
@@ -185,10 +238,8 @@ var chooseHitOrStand = function() {
 		}
 
 		else if (dealerStackValue >= 17) {
-			var removeForDealer3 = cards.pop();
-			dealerStack.push(removeForDealer3);
-			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'];
-			dealerCards.innerHTML = dealerCardsStart;
+			dealerCards.appendChild(dealerSecondCard);
+			dealerSecondCard.innerHTML = dealerStack[1]['name'];
 			if (dealerStackValue === 21 && playerStackValue !== 21) {
 				dealerWinsDouble();
 			}
@@ -204,36 +255,93 @@ var chooseHitOrStand = function() {
 		var removeforPlayer3 = cards.pop();
 		playerStack.push(removeforPlayer3);
 	
-		playerCardsStart = playerCardsStart + " " + playerStack[playerStack.length - 1]['name'];
-		playerCards.innerHTML = playerCardsStart;
+		// playerCardsStart = playerCardsStart + " " + playerStack[playerStack.length - 1]['name'];
+		// playerCards.innerHTML = playerCardsStart;
+		if (playerStack.length === 3) {
+			playerStackValue = playerStackValue +  playerStack[playerStack.length - 1]['value'];
+			playerCards.appendChild(playerThirdCard);
+			playerThirdCard.innerHTML = playerStack[2]['name'];
 
-		playerStackValue = playerStackValue +  playerStack[playerStack.length - 1]['value'];
+			if (playerStackValue > 21) {
+				dealerWins();
+			}
 
-		if (playerStackValue > 21) {
-			dealerWins();
+			else if (playerStackValue === 21 && dealerStackValue !== 21) {
+
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				playerWins();
+			}
+
+			else if (playerStackValue === 21 && dealerStackValue === 21) {
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				drawOutcome();
+			}
+
 		}
 
-		else if (playerStackValue === 21 && dealerStackValue !== 21) {
+		else if (playerStack.length === 4) {
+			playerStackValue = playerStackValue +  playerStack[playerStack.length - 1]['value'];
+			playerCards.appendChild(playerFourthCard);
+			playerFourthCard.innerHTML = playerStack[3]['name'];
 
-			dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
-			dealerCards.innerHTML = dealerCardsStart;
-			playerWins();
+			if (playerStackValue > 21) {
+				dealerWins();
+			}
+
+			else if (playerStackValue === 21 && dealerStackValue !== 21) {
+
+				dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
+				dealerCards.innerHTML = dealerCardsStart;
+				playerWins();
+			}
+
+			else if (playerStackValue === 21 && dealerStackValue === 21) {
+				dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
+				dealerCards.innerHTML = dealerCardsStart;
+				drawOutcome();
+			}
 		}
 
-		else if (playerStackValue === 21 && dealerStackValue === 21) {
-			dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
-			dealerCards.innerHTML = dealerCardsStart;
-			drawOutcome();
+		else if (playerStack.length === 5) {
+			playerStackValue = playerStackValue +  playerStack[playerStack.length - 1]['value'];
+			playerCards.appendChild(playerFifthCard);
+			playerFifthCard.innerHTML = playerStack[4]['name'];
+
+			if (playerStackValue > 21) {
+				dealerWins();
+			}
+
+			else if (playerStackValue === 21 && dealerStackValue !== 21) {
+
+				dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
+				dealerCards.innerHTML = dealerCardsStart;
+				playerWins();
+			}
+
+			else if (playerStackValue === 21 && dealerStackValue === 21) {
+				dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
+				dealerCards.innerHTML = dealerCardsStart;
+				drawOutcome();
+			}
 		}
 	}
 
+
+
 	standButton.onclick = function() {
+		
 		if (dealerStackValue < 17) {
 			var removeForDealer3 = cards.pop();
 			dealerStack.push(removeForDealer3);
-			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'] + " " + dealerStack[dealerStack.length - 1]['name'];
-			dealerCards.innerHTML = dealerCardsStart;
-			dealerStackValue = dealerStackValue + dealerStack[2]['value'];
+			// dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'] + " " + dealerStack[dealerStack.length - 1]['name'];
+			dealerCards.appendChild(dealerSecondCard);
+			dealerSecondCard.innerHTML = dealerStack[1]['name'];
+			dealerCards.appendChild(dealerThirdCard);
+			dealerThirdCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+			
+			dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'];
 
 			if (dealerStackValue > 21) {
 				playerWins();
@@ -245,10 +353,10 @@ var chooseHitOrStand = function() {
 		}
 
 		else if (dealerStackValue >= 17) {
-			var removeForDealer3 = cards.pop();
-			dealerStack.push(removeForDealer3);
-			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'];
-			dealerCards.innerHTML = dealerCardsStart;
+			// var removeForDealer3 = cards.pop();
+			// dealerStack.push(removeForDealer3);
+			dealerCards.appendChild(dealerSecondCard);
+			dealerSecondCard.innerHTML = dealerStack[1]['name'];
 			if (dealerStackValue === 21 && playerStackValue !== 21) {
 				dealerWins();
 			}
@@ -270,15 +378,15 @@ var checkForWin = function() {
 	if (playerStackValue === 21) {
 		playerWins();
 	}
-	else if ((21 - playerStackValue) > (21 - dealerStackValue)) {
+	else if (((21 - playerStackValue) > (21 - dealerStackValue)) && !(21 - dealerStackValue <= 0)) {
 		dealerWins();
 	}
 
 	else if ((21 - playerStackValue) < (21 - dealerStackValue))  {
 		playerWins();
 	}
-
-	else {
+	
+	else if (playerStackValue === dealerStackValue) {
 		drawOutcome();
 	}
 }
@@ -295,7 +403,7 @@ var checkForWinDoubleDown = function() {
 		playerWinsDouble();
 	}
 
-	else {
+	else if (playerStackValue === dealerStackValue) {
 		drawOutcome();
 	}
 }
@@ -354,7 +462,7 @@ var restart = function() {
 			playerCards.innerHTML = "";
 			dealerCards.innerHTML = "";
 			console.log('howwwwdddyyyy');
-		},5000);
+		},1500);
 
 	}
 	else if (playerOutcome <= 0) {
@@ -372,6 +480,11 @@ var restart = function() {
 	}
 }
 
+
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::::::::Start Over Option::::::::::::::::::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 quitButton.onclick = function() {
 	var decide = prompt("Do you want to restart your game?");
 
@@ -383,6 +496,16 @@ quitButton.onclick = function() {
 		alert('Awesome! Best of luck!');
 	}
 }
+
+// var appendNewCards = function() {
+// 		for (i = 0; i < dealerStack.length; i++) {
+// 				dealerCards.appendChild(newCard);
+// 				newCard.setAttribute('class','card');
+// 				var newCardArray = document.querySelectorAll('.card');
+// 				newCardArray[1].innerHTML = dealerStack[1]['name'];
+// 				newCardArray[2].innerHTML = dealerStack[2]['name'];
+// 			}
+// }
 
 
 
