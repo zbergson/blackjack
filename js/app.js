@@ -151,7 +151,7 @@ var chooseHitOrStand = function() {
 		playerStackValue = playerStackValue +  playerStack[playerStack.length - 1]['value'];
 
 		if (playerStackValue > 21) {
-			dealerWins();
+			dealerWinsDouble();
 
 		}
 
@@ -159,7 +159,7 @@ var chooseHitOrStand = function() {
 
 			dealerCardsStart = dealerStack[0]['name'] + dealerStack[1]['name'];
 			dealerCards.innerHTML = dealerCardsStart;
-			playerWins();
+			playerWinsDouble();
 		}
 
 		else if (playerStackValue === 21 && dealerStackValue === 21) {
@@ -176,11 +176,11 @@ var chooseHitOrStand = function() {
 			dealerStackValue = dealerStackValue + dealerStack[2]['value'];
 
 			if (dealerStackValue > 21) {
-				playerWins();
+				playerWinsDouble();
 			}
 
 			else {
-				checkForWin();
+				checkForWinDoubleDown();
 			}
 		}
 
@@ -190,11 +190,11 @@ var chooseHitOrStand = function() {
 			dealerCardsStart = dealerCardsStart + " " + dealerStack[1]['name'];
 			dealerCards.innerHTML = dealerCardsStart;
 			if (dealerStackValue === 21 && playerStackValue !== 21) {
-				dealerWins();
+				dealerWinsDouble();
 			}
 
 			else {
-				checkForWin();
+				checkForWinDoubleDown();
 			}
 		}
 
@@ -266,8 +266,6 @@ var chooseHitOrStand = function() {
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 var checkForWin = function() {
-// playerWins = startingPot + parseInt(amount.value);
-// playerLoses = startingPot - parseInt(amount.value);
 
 	if (playerStackValue === 21) {
 		playerWins();
@@ -283,13 +281,43 @@ var checkForWin = function() {
 	else {
 		drawOutcome();
 	}
+}
 
+var checkForWinDoubleDown = function() {
+	if (playerStackValue === 21) {
+		playerWinsDouble();
+	}
+	else if ((21 - playerStackValue) > (21 - dealerStackValue)) {
+		dealerWinsDouble();
+	}
+
+	else if ((21 - playerStackValue) < (21 - dealerStackValue))  {
+		playerWinsDouble();
+	}
+
+	else {
+		drawOutcome();
+	}
 }
 
 var playerWins = function() {
 	playerOutcome = startingPot[0] + parseInt(amount.value);
 	moneyLeft.innerHTML = playerOutcome;
 	alert('player wins!');
+	restart();
+}
+
+var playerWinsDouble = function() {
+	playerOutcome = startingPot[0] + parseInt(2 * amount.value);
+	moneyLeft.innerHTML = playerOutcome;
+	alert('player wins!');
+	restart();
+}
+
+var dealerWinsDouble = function() {
+	playerOutcome = startingPot[0] - parseInt(2 * amount.value);
+	moneyLeft.innerHTML = playerOutcome;
+	alert('dealer wins!');
 	restart();
 }
 
