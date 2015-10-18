@@ -24,6 +24,7 @@ var moneyLeft = document.getElementById('money');
 var quitButton = document.getElementById('quit');
 var doubleDown = document.createElement('button');
 var insuranceButton = document.createElement('button');
+var playerMessage = document.getElementById('message');
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //::::::::::::::::::::::::::::Global stuff of cards::::::::::::::::::::::::::::::::::::::::::::::::::::
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -97,25 +98,27 @@ var deckRunsOut = function() {
 }
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-//::::::::::::::::::::::::::::::::::::::Make Bet & Deal cards::::::::::::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::::::::Make Bet & Deal cards & Insurance::::::::::::::::::::::::::::::
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 betForm.onsubmit = function(event) {	
 	event.preventDefault();
 	if (amount.value > startingPot[0]) {
-		alert("You don't have that much! Enter in a different value.")
+		playerMessage.innerHTML = "You don't have that much! Enter in a different value.";
 		return false;
 	}
 
 	if (amount.value === "") {
-		alert("You must place a minimum bet of 50!");
+		playerMessage.innerHTML = "You must place a minimum bet of 50!";
 		return false;
 	}
 
 	if (startingPot > 50 && amount.value < 50 ) {
-		alert("You must place a minimum bet of 50!");
+		playerMessage.innerHTML = "You must place a minimum bet of 50!";
 		return false;
 	}
+
+	playerMessage.innerHTML = "";
 
 	pot.innerHTML = "Your current bet is $" + amount.value + ". Click deal to begin!";
 	betForm.setAttribute('style', 'display: none');
@@ -172,7 +175,7 @@ betForm.onsubmit = function(event) {
 
 			if (dealerStack[0]['name'] === "A") {
 				insuranceButton.setAttribute('class', 'insurance');
-				pot.appendChild(insuranceButton);
+				dealerCards.appendChild(insuranceButton);
 				insuranceButton.innerHTML = "Insurance";
 					insuranceButton.onclick = function() {
 						dealerCards.removeChild(dealerFaceDownCard);
@@ -390,6 +393,7 @@ var chooseHitOrStand = function() {
 			dealerThirdCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 			
 			dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'];
+			checkForAceDealer();
 
 			if (dealerStackValue < 17) {
 				var removeForDealer3 = cards.pop();
@@ -397,6 +401,7 @@ var chooseHitOrStand = function() {
 				dealerCards.appendChild(dealerFourthCard);
 				dealerFourthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 				dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'];
+				checkForAceDealer();
 
 				if (dealerStackValue < 17) {
 					var removeForDealer3 = cards.pop();
@@ -405,6 +410,7 @@ var chooseHitOrStand = function() {
 					dealerFifthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 					
 					dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'];
+					checkForAceDealer();
 
 					if (dealerStackValue < 17) {
 						var removeForDealer3 = cards.pop();
@@ -413,12 +419,12 @@ var chooseHitOrStand = function() {
 						dealerSixthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 						
 						dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'] + dealerStack[5]['value'];
+						checkForAceDealer();
 					}
 
 				}
 			}
 
-			checkForAceDealer();
 
 			if (dealerStackValue > 21) {
 				playerWins();
@@ -499,37 +505,52 @@ var checkForWinDoubleDown = function() {
 
 var playerWins = function() {
 	playerOutcome = startingPot[0] + parseInt(amount.value);
-	moneyLeft.innerHTML = playerOutcome;
-	alert('player wins!');
-	restart();
+	moneyLeft.innerHTML = "Money Left: " + playerOutcome;
+	playerMessage.innerHTML = "Player Wins!";
+	setTimeout(function(){
+		console.log('yoyoyho');
+		restart();
+	},2500);
 }
 
 var playerWinsDouble = function() {
 	playerOutcome = startingPot[0] + parseInt(2 * amount.value);
-	moneyLeft.innerHTML = playerOutcome;
-	alert('player wins!');
-	restart();
+	moneyLeft.innerHTML = "Money Left: " + playerOutcome;
+	playerMessage.innerHTML = "Player Wins Big!";
+	setTimeout(function(){
+		console.log('yoyoyho');
+		restart();
+	},2500);
 }
 
 var dealerWinsDouble = function() {
 	playerOutcome = startingPot[0] - parseInt(2 * amount.value);
-	moneyLeft.innerHTML = playerOutcome;
-	alert('dealer wins!');
-	restart();
+	moneyLeft.innerHTML = "Money Left: " + playerOutcome;
+	playerMessage.innerHTML = "Player Loses Big Time!";
+	setTimeout(function(){
+		console.log('yoyoyho');
+		restart();
+	},2500);
 }
 
 var dealerWins = function() {
 	playerOutcome = startingPot[0] - parseInt(amount.value);
-	moneyLeft.innerHTML = playerOutcome;
-	alert('dealer wins!');
-	restart();
+	moneyLeft.innerHTML = "Money Left: " + playerOutcome;
+	playerMessage.innerHTML = "Player Loses!";
+	setTimeout(function(){
+		console.log('yoyoyho');
+		restart();
+	},2500);
 }
 
 var drawOutcome = function() {
 	playerOutcome = startingPot[0];
-	moneyLeft.innerHTML = playerOutcome;
-	alert('Draw!');
-	restart();
+	moneyLeft.innerHTML = "Money Left: " + playerOutcome;
+	playerMessage.innerHTML = "Draw!";
+	setTimeout(function(){
+		console.log('yoyoyho');
+		restart();
+	},2500);
 }
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -544,6 +565,7 @@ var restart = function() {
 			betForm.setAttribute('style', 'display: block');
 			pot.removeChild(hitButton);
 			pot.removeChild(standButton);
+			playerMessage.innerHTML = "";
 			pot.innerHTML = "Enter your bet!";
 			startingPot.pop();
 			startingPot.push(playerOutcome);
@@ -556,19 +578,8 @@ var restart = function() {
 
 	}
 	else if (playerOutcome <= 0) {
-		alert("You're out of cash");
+		playerMessage.innerHTML = "You're out of cash!";
 		deckRunsOut();
-	}
-
-	else {
-		betForm.setAttribute('style', 'display: block');
-		pot.removeChild(hitButton);
-		pot.removeChild(standButton);
-		amount.value = "";
-		dealerCards.innerHTML = "";
-		playerCards.innerHTML = "";
-		deckRunsOut();
-
 	}
 }
 

@@ -1,15 +1,21 @@
 body {
-	background-color: black;
+	background-image: url('../images/casinofour.jpg');
+	background-size: cover;
+	background-repeat: none;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
 }
 
 #table {
 	width: 1000px;
-	height: 700px;
+	height: 800px;
+	opacity: 0.96;
 	margin-left: auto;
 	margin-right: auto;
-	background-image: url('../images/blackjack-background.jpg');
-	background-size: cover;
-	margin-top: -20px;
+	background-color: #00B562;
+	margin-top: -45px;
+	position: relative;
+	top: 15px;
 }
 
 #container {
@@ -20,9 +26,15 @@ body {
 	top: 40px;
 }
 
-#pot {
+#potContainer {
+	width: 600px;
 	position: relative;
 	text-align: center;
+}
+
+#pot {
+	text-align: center;
+	font-size: 30px;
 }
 
 #begin {
@@ -34,25 +46,34 @@ body {
 }
 
 
+
+
 #dealer-cards {
 	width: 800px;
-	height: 150px;
-	border: 1px solid;
+	height: 155px;
+	border-radius: 10px;
+  	/*border-style: solid;*/
+  	border-width: 1px;
+  	background-color: #00D942;
 	position: relative;
-	margin-left: auto;
-	margin-right: auto;
+	right: 100px;
+/*	margin-left: auto;
+	margin-right: auto;*/
 	top: 20px;
 	display: inline-block;
 }
 
+
 #player-cards {
 	width: 800px;
-	height: 150px;
-	border: 1px solid;
-	margin-left: auto;
-	margin-right: auto;
+	height: 155px;
+	border-radius: 10px;
+    border-width: 1px;
+  	background-color: #00D942;
 	position: relative;
-	top: 30px;
+	right: 100px;
+	position: relative;
+	top: 100px;
 }
 
 .card {
@@ -66,6 +87,13 @@ body {
 /*	position: relative; */
 	width: 100px; 
 	display: inline-block;
+	padding-left: 5px;
+	padding-top: 5px;
+
+}
+
+.card:hover {
+	color: #7FDBFF;
 }
 
 .dealercard {
@@ -80,6 +108,12 @@ body {
 	top: -135px;
 	width: 100px; 
 	display: inline-block;
+	padding-left: 5px;
+	padding-top: 5px;
+}
+
+.dealercard:hover {
+	color: #7FDBFF;
 }
 
 .cardback {
@@ -92,6 +126,8 @@ body {
 	margin: none;
 	/*position: relative; */
 	width: 100px; 
+	padding-left: 5px;
+	padding-top: 5px;
 	display: inline-block;
 }
 
@@ -99,8 +135,8 @@ body {
 /*	margin-right: auto;
 	margin-left: auto;*/
 	position: relative;
-	right: 45px;
-	top: 30px;
+	text-align: center;
+	top: 20px;
 }
 
 form {
@@ -113,12 +149,87 @@ form {
 .hit {
 	position: relative;
 	/*left: 190px;*/
-	top: 30px;
-	right: 210px;
+	top: 260px;
+	right: 200px;
 }
 .stand {
 	position: relative;
 	/*left: 200px;*/
-	top: 30px;
-	right: 200px;
+	top: 260px;
+	right: 195px;
+}
+
+.double-down {
+	position: relative;
+	top: 260px;
+	right: 189px;
+}
+
+.insurance {
+	position: relative;
+	top: 48px;
+	left: 245px;
+	display: inline-block;
+}
+
+button {
+  border-radius: 0.25em;
+  border-style: solid;
+  border-width: 1px;
+  color: #111;
+  display: inline-block;
+  font-family: helvetica, sans-serif;
+  letter-spacing: 0.10em;
+ /* margin-bottom: 0.5em;*/
+ /* padding: 0.5em 1.0em;*/
+  text-decoration: none;
+  text-transform: uppercase;
+  -webkit-transition: color 0.4s, background-color 0.4s, border 0.4s;
+  transition: color 0.4s, background-color 0.4s, border 0.4s;
+}
+button:hover {
+  color: #7FDBFF;
+  border: 1px solid #7FDBFF;
+  -webkit-transition: background-color 0.3s, color 0.3s, border 0.3s;
+  transition: background-color 0.3s, color 0.3s, border 0.3s; 
+}
+button:active {
+  color: #0074D9;
+  border: 1px solid #0074D9;
+  -webkit-transition: background-color 0.3s, color 0.3s, border 0.3s;
+  transition: background-color 0.3s, color 0.3s, border 0.3s; 
+}
+
+#quit {
+	position: relative;
+	top: 140px;
+	left: 445px;
+}
+
+#money {
+	position: relative;
+	top: 140px;
+	text-align: center;
+	font-size: 30px;
+}
+
+#money:hover {
+	color: #7FDBFF;
+}
+
+#bet {
+	position: relative;
+	bottom: 1px;
+}
+
+#message {
+	position: relative;
+	top: 60px;
+	text-align: center;
+	margin-bottom: 0;
+	font-size: 25px;
+}
+
+#message:hover {
+	color: #7FDBFF;
 }
