@@ -266,15 +266,6 @@ var chooseHitOrStand = function() {
 			dealerThirdCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit']
 			
 			dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'];
-			checkForAceDealer();
-
-			if (dealerStackValue > 21) {
-				playerWinsDouble();
-			}
-
-			if (dealerStackValue >= 17 && dealerStackValue <= 21) {
-				checkForWinDoubleDown();
-			}
 
 			if (dealerStackValue < 17) {
 				var removeForDealer3 = cards.pop();
@@ -283,15 +274,6 @@ var chooseHitOrStand = function() {
 				dealerFourthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit']
 				
 				dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'];
-				checkForAceDealer();
-
-				if (dealerStackValue > 21) {
-					playerWinsDouble();
-				}
-
-				if (dealerStackValue >= 17 && dealerStackValue <= 21) {
-					checkForWin();
-				}
 
 				if (dealerStackValue < 17) {
 					var removeForDealer3 = cards.pop();
@@ -302,10 +284,6 @@ var chooseHitOrStand = function() {
 					dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'];
 					checkForAce();
 
-					if (dealerStackValue > 21) {
-						playerWinsDouble();
-					}
-
 					if (dealerStackValue < 17) {
 						var removeForDealer3 = cards.pop();
 						dealerStack.push(removeForDealer3);
@@ -314,24 +292,20 @@ var chooseHitOrStand = function() {
 						
 						dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'] + dealerStack[5]['value'];
 						checkForAceDealer();
-
-						if (dealerStackValue > 21) {
-							playerWinsDouble();
-						}
-
-
-						else {
-							checkForWinDoubleDown();
-						}
-
-					}
-
-					else {
-						checkForWinDoubleDown();
 					}
 
 				}
 
+			}
+
+			checkForAceDealer();
+
+			if (dealerStackValue > 21) {
+				playerWinsDouble();
+			}
+
+			if (dealerStackValue >= 17 && dealerStackValue <= 21) {
+				checkForWinDoubleDown();
 			}
 		}
 
@@ -425,14 +399,6 @@ var chooseHitOrStand = function() {
 			dealerThirdCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 			
 			dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'];
-			checkForAceDealer();
-			if (dealerStackValue > 21) {
-				playerWins();
-			}
-
-			if (dealerStackValue >= 17 && dealerStackValue <= 21) {
-				checkForWin();
-			}
 
 			if (dealerStackValue < 17) {
 				var removeForDealer3 = cards.pop();
@@ -441,15 +407,6 @@ var chooseHitOrStand = function() {
 				dealerFourthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 				
 				dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'];
-				checkForAceDealer();
-
-				if (dealerStackValue > 21) {
-					playerWins();
-				}
-
-				if (dealerStackValue >= 17 && dealerStackValue <= 21) {
-					checkForWin();
-				}
 
 				if (dealerStackValue < 17) {
 					var removeForDealer3 = cards.pop();
@@ -458,15 +415,6 @@ var chooseHitOrStand = function() {
 					dealerFifthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 					
 					dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'];
-					checkForAceDealer();
-
-					if (dealerStackValue > 21) {
-						playerWins();
-					}
-
-					if (dealerStackValue >= 17 && dealerStackValue <= 21) {
-						checkForWin();
-					}
 
 					if (dealerStackValue < 17) {
 						var removeForDealer3 = cards.pop();
@@ -475,19 +423,19 @@ var chooseHitOrStand = function() {
 						dealerSixthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 						
 						dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'] + dealerStack[5]['value'];
-						checkForAceDealer();
-
-						if (dealerStackValue > 21) {
-							playerWins();
-						}
-
-
-						else {
-							checkForWin();
-						}
 					}
 
 				}
+			}
+
+			checkForAceDealer();
+
+			if (dealerStackValue > 21) {
+				playerWins();
+			}
+
+			if (dealerStackValue >= 17 && dealerStackValue <= 21) {
+				checkForWin();
 			}
 		}
 
