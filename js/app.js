@@ -130,15 +130,15 @@ betForm.onsubmit = function(event) {
 			playerStack = [removeForPlayer1, removeForPlayer2];
 
 			playerCards.appendChild(playerFirstCard);
-			playerFirstCard.innerHTML = playerStack[0]['name'];
+			playerFirstCard.innerHTML = playerStack[0]['name'] + playerStack[0]['suit'];
 			playerCards.appendChild(playerSecondCard);
-			playerSecondCard.innerHTML = playerStack[1]['name'];
+			playerSecondCard.innerHTML = playerStack[1]['name'] + playerStack[1]['suit'];
 			
 
 			var removeForDealer1 = cards.pop();
 			var removeForDealer2 = cards.pop();
 			dealerStack = [removeForDealer1, removeForDealer2];
-			dealerCardsStart = dealerStack[0]['name'];
+			dealerCardsStart = dealerStack[0]['name'] + dealerStack[0]['suit'];
 			dealerCards.appendChild(dealerFirstCard);
 			dealerFirstCard.setAttribute('class', 'dealercard');
 			dealerFirstCard.innerHTML = dealerCardsStart;
@@ -180,7 +180,7 @@ betForm.onsubmit = function(event) {
 						dealerCards.removeChild(dealerFaceDownCard);
 						dealerFirstCard.setAttribute('class', 'card');
 						dealerCards.appendChild(dealerSecondCard);
-						dealerSecondCard.innerHTML = dealerStack[1]['name'];
+						dealerSecondCard.innerHTML = dealerStack[1]['name'] + dealerStack[1]['suit'];
 
 						if (dealerStackValue === 21) {
 							playerWinsDouble();
@@ -196,7 +196,7 @@ betForm.onsubmit = function(event) {
 				dealerCards.removeChild(dealerFaceDownCard);
 				dealerFirstCard.setAttribute('class', 'card');
 				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				dealerSecondCard.innerHTML = dealerStack[1]['name'] + dealerStack[1]['suit'];
 				playerWins();
 				
 			}
@@ -205,7 +205,7 @@ betForm.onsubmit = function(event) {
 				dealerCards.removeChild(dealerFaceDownCard);
 				dealerFirstCard.setAttribute('class', 'card');
 				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				dealerSecondCard.innerHTML = dealerStack[1]['name'] + dealerStack[1]['suit'];
 				drawOutcome();	
 			}
 
@@ -230,21 +230,10 @@ var chooseHitOrStand = function() {
 		var removeforPlayer3 = cards.pop();
 		playerStack.push(removeforPlayer3);
 		playerCards.appendChild(playerThirdCard);
-		playerThirdCard.innerHTML = playerStack[2]['name'];
-
+		playerThirdCard.innerHTML = playerStack[2]['name'] + playerStack[2]['suit'];
 		playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'];
 
-		if (playerStack[0]['name'] === "A" && playerStackValue > 21) {
-			playerStackValue = playerStackValue - 10;
-		}
-
-		if (playerStack[1]['name'] === "A" && playerStackValue > 21) {
-			playerStackValue = playerStackValue - 10;
-		}
-
-		if (playerStack[2]['name'] === "A" && playerStackValue > 21) {
-				playerStackValue = playerStackValue - 10;
-		}
+		checkForAce();
 
 		if (playerStackValue > 21) {
 			dealerWinsDouble();
@@ -254,7 +243,7 @@ var chooseHitOrStand = function() {
 			dealerCards.removeChild(dealerFaceDownCard);
 			dealerFirstCard.setAttribute('class', 'card');
 			dealerCards.appendChild(dealerSecondCard);
-			dealerSecondCard.innerHTML = dealerStack[1]['name'];
+			dealerSecondCard.innerHTML = dealerStack[1]['name'] + dealerStack[1]['suit'];
 			playerWinsDouble();
 		}
 
@@ -262,12 +251,11 @@ var chooseHitOrStand = function() {
 			dealerCards.removeChild(dealerFaceDownCard);
 			dealerFirstCard.setAttribute('class', 'card');
 			dealerCards.appendChild(dealerSecondCard);
-			dealerSecondCard.innerHTML = dealerStack[1]['name'];
+			dealerSecondCard.innerHTML = dealerStack[1]['name'] + dealerStack[1]['suit'];
 			drawOutcome();
 		}
 
 		else if (dealerStackValue < 17) {
-
 			var removeForDealer3 = cards.pop();
 			dealerStack.push(removeForDealer3);
 			dealerCards.removeChild(dealerFaceDownCard);
@@ -275,20 +263,10 @@ var chooseHitOrStand = function() {
 			dealerCards.appendChild(dealerSecondCard);
 			dealerSecondCard.innerHTML = dealerStack[1]['name'];
 			dealerCards.appendChild(dealerThirdCard);
-			dealerThirdCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+			dealerThirdCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit']
 			
 			dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'];
-			if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-			}
-
-			if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-			}
-
-			if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-			}
+			checkForAceDealer();
 
 			if (dealerStackValue > 21) {
 				playerWinsDouble();
@@ -302,24 +280,10 @@ var chooseHitOrStand = function() {
 				var removeForDealer3 = cards.pop();
 				dealerStack.push(removeForDealer3);
 				dealerCards.appendChild(dealerFourthCard);
-				dealerFourthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+				dealerFourthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit']
 				
 				dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'];
-				if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-				}
-
-				if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-				}
-
-				if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-				}
-
-				if (dealerStack[3]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-				}
+				checkForAceDealer();
 
 				if (dealerStackValue > 21) {
 					playerWinsDouble();
@@ -333,28 +297,10 @@ var chooseHitOrStand = function() {
 					var removeForDealer3 = cards.pop();
 					dealerStack.push(removeForDealer3);
 					dealerCards.appendChild(dealerFifthCard);
-					dealerFifthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+					dealerFifthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit']
 					
 					dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'];
-					if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
-						dealerStackValue = dealerStackValue - 10;
-					}
-
-					if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
-						dealerStackValue = dealerStackValue - 10;
-					}
-
-					if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
-						dealerStackValue = dealerStackValue - 10;
-					}
-
-					if (dealerStack[3]['name'] === "A" && dealerStackValue > 21) {
-						dealerStackValue = dealerStackValue - 10;
-					}
-
-					if (dealerStack[4]['name'] === "A" && dealerStackValue > 21) {
-						dealerStackValue = dealerStackValue - 10;
-					}
+					checkForAce();
 
 					if (dealerStackValue > 21) {
 						playerWinsDouble();
@@ -364,32 +310,10 @@ var chooseHitOrStand = function() {
 						var removeForDealer3 = cards.pop();
 						dealerStack.push(removeForDealer3);
 						dealerCards.appendChild(dealerSixthCard);
-						dealerSixthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+						dealerSixthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit']
 						
 						dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'] + dealerStack[5]['value'];
-						if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
-
-						if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
-
-						if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
-
-						if (dealerStack[3]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
-
-						if (dealerStack[4]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
-
-						if (dealerStack[5]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
+						checkForAceDealer();
 
 						if (dealerStackValue > 21) {
 							playerWinsDouble();
@@ -401,7 +325,6 @@ var chooseHitOrStand = function() {
 						}
 
 					}
-
 
 					else {
 						checkForWinDoubleDown();
@@ -416,7 +339,7 @@ var chooseHitOrStand = function() {
 			dealerCards.removeChild(dealerFaceDownCard);
 			dealerFirstCard.setAttribute('class', 'card');
 			dealerCards.appendChild(dealerSecondCard);
-			dealerSecondCard.innerHTML = dealerStack[1]['name'];
+			dealerSecondCard.innerHTML = dealerStack[1]['name'] + dealerStack[1]['suit'];
 			if (dealerStackValue === 21 && playerStackValue !== 21) {
 				dealerWinsDouble();
 			}
@@ -438,228 +361,53 @@ var chooseHitOrStand = function() {
 
 		if (playerStack.length === 3) {
 			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'];
-
-			if (playerStack[0]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[1]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[2]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
 			playerCards.appendChild(playerThirdCard);
-			playerThirdCard.innerHTML = playerStack[2]['name'];
-
-			if (playerStackValue > 21) {
-				dealerWins();
-			}
-
-			else if ((playerStackValue === 21 && dealerStackValue !== 21) && dealerStackValue >= 17) {
-				dealerCards.removeChild(dealerFaceDownCard);
-				dealerFirstCard.setAttribute('class', 'card');
-				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
-				playerWins();
-			}
-
-			else if (playerStackValue === 21 && dealerStackValue === 21) {
-				dealerCards.removeChild(dealerFaceDownCard);
-				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
-				drawOutcome();
-			}
-
+			playerThirdCard.innerHTML = playerStack[2]['name'] + playerStack[2]['suit'];
 		}
 
 		else if (playerStack.length === 4) {
 			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'] + playerStack[3]['value'];
-			if (playerStack[0]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[1]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[2]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-			if (playerStack[3]['name'] === "A" && playerStackValue > 21) {
-				playerStackValue = playerStackValue - 10;
-			}
-
 			playerCards.appendChild(playerFourthCard);
-			playerFourthCard.innerHTML = playerStack[3]['name'];
-
-			if (playerStackValue > 21) {
-				dealerWins();
-			}
-
-			else if ((playerStackValue === 21 && dealerStackValue !== 21) && dealerStackValue >= 17) {
-				dealerCards.removeChild(dealerFaceDownCard);
-				dealerFirstCard.setAttribute('class', 'card');
-				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
-				playerWins();
-			}
-
-			else if (playerStackValue === 21 && dealerStackValue === 21) {
-				dealerCards.removeChild(dealerFaceDownCard);
-				dealerFirstCard.setAttribute('class', 'card');
-				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
-				drawOutcome();
-			}
+			playerFourthCard.innerHTML = playerStack[3]['name'] + playerStack[3]['suit'];
 		}
 
 		else if (playerStack.length === 5) {
 			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'] + playerStack[3]['value'] + playerStack[4]['value'];
-			if (playerStack[0]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[1]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[2]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[3]['name'] === "A" && playerStackValue > 21) {
-				playerStackValue = playerStackValue - 10;
-			}
-			
-			if (playerStack[4]['name'] === "A" && playerStackValue > 21) {
-				playerStackValue = playerStackValue - 10;
-			}
 			playerCards.appendChild(playerFifthCard);
-			playerFifthCard.innerHTML = playerStack[4]['name'];
-
-			if (playerStackValue > 21) {
-				dealerWins();
-			}
-
-			else if ((playerStackValue === 21 && dealerStackValue !== 21) && dealerStackValue >= 17) {
-				dealerFirstCard.setAttribute('class', 'card');
-				dealerCards.removeChild(dealerFaceDownCard);
-				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
-				playerWins();
-			}
-
-			else if (playerStackValue === 21 && dealerStackValue === 21) {
-				dealerFirstCard.setAttribute('class', 'card');
-				dealerCards.removeChild(dealerFaceDownCard);
-				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
-				drawOutcome();
-			}
+			playerFifthCard.innerHTML = playerStack[4]['name'] + playerStack[4]['suit'];
 		}
 
 		else if (playerStack.length === 6) {
 			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'] + playerStack[3]['value'] + playerStack[4]['value'] + playerStack[5]['value'];
-			if (playerStack[0]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[1]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[2]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[3]['name'] === "A" && playerStackValue > 21) {
-				playerStackValue = playerStackValue - 10;
-			}
-			
-			if (playerStack[4]['name'] === "A" && playerStackValue > 21) {
-				playerStackValue = playerStackValue - 10;
-			}
-			if (playerStack[5]['name'] === "A" && playerStackValue > 21) {
-				playerStackValue = playerStackValue - 10;
-			}
-				
 			playerCards.appendChild(playerSixthCard);
-			playerSixthCard.innerHTML = playerStack[5]['name'];
-
-			if (playerStackValue > 21) {
-				dealerWins();
-			}
-
-			else if ((playerStackValue === 21 && dealerStackValue !== 21) && dealerStackValue >= 17) {
-				dealerFirstCard.setAttribute('class', 'card');
-				dealerCards.removeChild(dealerFaceDownCard);
-				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
-				playerWins();
-			}
-
-			else if (playerStackValue === 21 && dealerStackValue === 21) {
-				dealerFirstCard.setAttribute('class', 'card');
-				dealerCards.removeChild(dealerFaceDownCard);
-				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
-				drawOutcome();
-			}
+			playerSixthCard.innerHTML = playerStack[5]['name'] + playerStack[5]['suit'];
 		}
 
 		else if (playerStack.length === 7) {
 			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'] + playerStack[3]['value'] + playerStack[4]['value'] + playerStack[5]['value'] + playerStack[6]['value'];
-			if (playerStack[0]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[1]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[2]['name'] === "A" && playerStackValue > 21) {
-					playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[3]['name'] === "A" && playerStackValue > 21) {
-				playerStackValue = playerStackValue - 10;
-			}
-			
-			if (playerStack[4]['name'] === "A" && playerStackValue > 21) {
-				playerStackValue = playerStackValue - 10;
-			}
-			if (playerStack[5]['name'] === "A" && playerStackValue > 21) {
-				playerStackValue = playerStackValue - 10;
-			}
-
-			if (playerStack[6]['name'] === "A" && playerStackValue > 21) {
-				playerStackValue = playerStackValue - 10;
-			}
-				
 			playerCards.appendChild(playerSeventhCard);
-			playerSeventhCard.innerHTML = playerStack[6]['name'];
+			playerSeventhCard.innerHTML = playerStack[6]['name'] + playerStack[6]['suit'];
+		}
 
-			if (playerStackValue > 21) {
-				dealerWins();
-			}
+		checkForAce();
 
-			else if ((playerStackValue === 21 && dealerStackValue !== 21) && dealerStackValue >= 17) {
-				dealerFirstCard.setAttribute('class', 'card');
+		if (playerStackValue > 21) {
+			dealerWins();
+		}
+
+		if ((playerStackValue === 21 && dealerStackValue !== 21) && dealerStackValue >= 17) {
+			dealerCards.removeChild(dealerFaceDownCard);
+			dealerFirstCard.setAttribute('class', 'card');
+			dealerCards.appendChild(dealerSecondCard);
+			dealerSecondCard.innerHTML = dealerStack[1]['name'] + dealerStack[1]['suit'];
+			playerWins();
+		}
+
+		if (playerStackValue === 21 && dealerStackValue === 21) {
 				dealerCards.removeChild(dealerFaceDownCard);
 				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
-				playerWins();
-			}
-
-			else if (playerStackValue === 21 && dealerStackValue === 21) {
-				dealerFirstCard.setAttribute('class', 'card');
-				dealerCards.removeChild(dealerFaceDownCard);
-				dealerCards.appendChild(dealerSecondCard);
-				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				dealerSecondCard.innerHTML = dealerStack[1]['name'] + dealerStack[1]['suit'];
 				drawOutcome();
-			}
 		}
 	}
 
@@ -672,22 +420,12 @@ var chooseHitOrStand = function() {
 			dealerCards.removeChild(dealerFaceDownCard);
 			dealerFirstCard.setAttribute('class', 'card');
 			dealerCards.appendChild(dealerSecondCard);
-			dealerSecondCard.innerHTML = dealerStack[1]['name'];
+			dealerSecondCard.innerHTML = dealerStack[1]['name'] + dealerStack[1]['suit'];
 			dealerCards.appendChild(dealerThirdCard);
-			dealerThirdCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+			dealerThirdCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 			
 			dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'];
-			if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-			}
-
-			if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-			}
-
-			if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-			}
+			checkForAceDealer();
 			if (dealerStackValue > 21) {
 				playerWins();
 			}
@@ -700,24 +438,10 @@ var chooseHitOrStand = function() {
 				var removeForDealer3 = cards.pop();
 				dealerStack.push(removeForDealer3);
 				dealerCards.appendChild(dealerFourthCard);
-				dealerFourthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+				dealerFourthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 				
 				dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'];
-				if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-				}
-
-				if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-				}
-
-				if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-				}
-
-				if (dealerStack[3]['name'] === "A" && dealerStackValue > 21) {
-					dealerStackValue = dealerStackValue - 10;
-				}
+				checkForAceDealer();
 
 				if (dealerStackValue > 21) {
 					playerWins();
@@ -731,28 +455,10 @@ var chooseHitOrStand = function() {
 					var removeForDealer3 = cards.pop();
 					dealerStack.push(removeForDealer3);
 					dealerCards.appendChild(dealerFifthCard);
-					dealerFifthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+					dealerFifthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 					
 					dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'];
-					if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
-						dealerStackValue = dealerStackValue - 10;
-					}
-
-					if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
-						dealerStackValue = dealerStackValue - 10;
-					}
-
-					if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
-						dealerStackValue = dealerStackValue - 10;
-					}
-
-					if (dealerStack[3]['name'] === "A" && dealerStackValue > 21) {
-						dealerStackValue = dealerStackValue - 10;
-					}
-
-					if (dealerStack[4]['name'] === "A" && dealerStackValue > 21) {
-						dealerStackValue = dealerStackValue - 10;
-					}
+					checkForAceDealer();
 
 					if (dealerStackValue > 21) {
 						playerWins();
@@ -766,32 +472,10 @@ var chooseHitOrStand = function() {
 						var removeForDealer3 = cards.pop();
 						dealerStack.push(removeForDealer3);
 						dealerCards.appendChild(dealerSixthCard);
-						dealerSixthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+						dealerSixthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'] + dealerStack[dealerStack.length - 1]['suit'];
 						
 						dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'] + dealerStack[5]['value'];
-						if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
-
-						if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
-
-						if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
-
-						if (dealerStack[3]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
-
-						if (dealerStack[4]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
-
-						if (dealerStack[5]['name'] === "A" && dealerStackValue > 21) {
-							dealerStackValue = dealerStackValue - 10;
-						}
+						checkForAceDealer();
 
 						if (dealerStackValue > 21) {
 							playerWins();
@@ -811,7 +495,7 @@ var chooseHitOrStand = function() {
 			dealerCards.removeChild(dealerFaceDownCard);
 			dealerFirstCard.setAttribute('class', 'card');
 			dealerCards.appendChild(dealerSecondCard);
-			dealerSecondCard.innerHTML = dealerStack[1]['name'];
+			dealerSecondCard.innerHTML = dealerStack[1]['name'] + dealerStack[1]['suit'];
 			if (dealerStackValue === 21 && playerStackValue !== 21) {
 				dealerWins();
 			}
@@ -965,4 +649,411 @@ quitButton.onclick = function() {
 		alert('Awesome! Best of luck!');
 	}
 }
+
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::::::::Check if Ace floats::::::::::::::::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+var checkForAce = function() {
+	for (i = 0; i < playerStack.length; i++) {
+		if (playerStack[i]['name'] === "A" && playerStackValue > 21) {
+			playerStackValue = playerStackValue - 10;
+			console.log(playerStackValue);
+			console.log(playerStack[i]['name']);
+		}
+
+	}
+}
+
+var checkForAceDealer = function() {
+	for (i = 0; i < dealerStack.length; i++) {
+		if (dealerStack[i]['name'] === "A" && dealerStackValue > 21) {
+			dealerStackValue = dealerStackValue - 10;
+			console.log(dealerStackValue);
+			console.log(dealerStack[i]['name']);
+		}
+
+	}
+}
+
+
+
+/* //if (playerStack.length === 3) {
+			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'];
+
+			// if (playerStack[0]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[1]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[2]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+//			playerCards.appendChild(playerThirdCard);
+//			playerThirdCard.innerHTML = playerStack[2]['name'];
+
+			if (playerStackValue > 21) {
+				dealerWins();
+			}
+
+			else if ((playerStackValue === 21 && dealerStackValue !== 21) && dealerStackValue >= 17) {
+				dealerCards.removeChild(dealerFaceDownCard);
+				dealerFirstCard.setAttribute('class', 'card');
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				playerWins();
+			}
+
+			else if (playerStackValue === 21 && dealerStackValue === 21) {
+				dealerCards.removeChild(dealerFaceDownCard);
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				drawOutcome();
+			}
+
+		}
+
+		else if (playerStack.length === 4) {
+			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'] + playerStack[3]['value'];
+			// if (playerStack[0]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[1]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[2]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+			// if (playerStack[3]['name'] === "A" && playerStackValue > 21) {
+			// 	playerStackValue = playerStackValue - 10;
+			// }
+
+			playerCards.appendChild(playerFourthCard);
+			playerFourthCard.innerHTML = playerStack[3]['name'];
+
+			if (playerStackValue > 21) {
+				dealerWins();
+			}
+
+			else if ((playerStackValue === 21 && dealerStackValue !== 21) && dealerStackValue >= 17) {
+				dealerCards.removeChild(dealerFaceDownCard);
+				dealerFirstCard.setAttribute('class', 'card');
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				playerWins();
+			}
+
+			else if (playerStackValue === 21 && dealerStackValue === 21) {
+				dealerCards.removeChild(dealerFaceDownCard);
+				dealerFirstCard.setAttribute('class', 'card');
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				drawOutcome();
+			}
+		}
+
+		else if (playerStack.length === 5) {
+			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'] + playerStack[3]['value'] + playerStack[4]['value'];
+			// if (playerStack[0]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[1]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[2]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[3]['name'] === "A" && playerStackValue > 21) {
+			// 	playerStackValue = playerStackValue - 10;
+			// }
+			
+			// if (playerStack[4]['name'] === "A" && playerStackValue > 21) {
+			// 	playerStackValue = playerStackValue - 10;
+			// }
+			playerCards.appendChild(playerFifthCard);
+			playerFifthCard.innerHTML = playerStack[4]['name'];
+
+			if (playerStackValue > 21) {
+				dealerWins();
+			}
+
+			else if ((playerStackValue === 21 && dealerStackValue !== 21) && dealerStackValue >= 17) {
+				dealerFirstCard.setAttribute('class', 'card');
+				dealerCards.removeChild(dealerFaceDownCard);
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				playerWins();
+			}
+
+			else if (playerStackValue === 21 && dealerStackValue === 21) {
+				dealerFirstCard.setAttribute('class', 'card');
+				dealerCards.removeChild(dealerFaceDownCard);
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				drawOutcome();
+			}
+		}
+
+		else if (playerStack.length === 6) {
+			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'] + playerStack[3]['value'] + playerStack[4]['value'] + playerStack[5]['value'];
+			// if (playerStack[0]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[1]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[2]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[3]['name'] === "A" && playerStackValue > 21) {
+			// 	playerStackValue = playerStackValue - 10;
+			// }
+			
+			// if (playerStack[4]['name'] === "A" && playerStackValue > 21) {
+			// 	playerStackValue = playerStackValue - 10;
+			// }
+			// if (playerStack[5]['name'] === "A" && playerStackValue > 21) {
+			// 	playerStackValue = playerStackValue - 10;
+			// }
+				
+			playerCards.appendChild(playerSixthCard);
+			playerSixthCard.innerHTML = playerStack[5]['name'];
+
+			if (playerStackValue > 21) {
+				dealerWins();
+			}
+
+			else if ((playerStackValue === 21 && dealerStackValue !== 21) && dealerStackValue >= 17) {
+				dealerFirstCard.setAttribute('class', 'card');
+				dealerCards.removeChild(dealerFaceDownCard);
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				playerWins();
+			}
+
+			else if (playerStackValue === 21 && dealerStackValue === 21) {
+				dealerFirstCard.setAttribute('class', 'card');
+				dealerCards.removeChild(dealerFaceDownCard);
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				drawOutcome();
+			}
+		}
+
+		else if (playerStack.length === 7) {
+			playerStackValue = playerStack[0]['value'] + playerStack[1]['value'] + playerStack[2]['value'] + playerStack[3]['value'] + playerStack[4]['value'] + playerStack[5]['value'] + playerStack[6]['value'];
+			// if (playerStack[0]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[1]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[2]['name'] === "A" && playerStackValue > 21) {
+			// 		playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[3]['name'] === "A" && playerStackValue > 21) {
+			// 	playerStackValue = playerStackValue - 10;
+			// }
+			
+			// if (playerStack[4]['name'] === "A" && playerStackValue > 21) {
+			// 	playerStackValue = playerStackValue - 10;
+			// }
+			// if (playerStack[5]['name'] === "A" && playerStackValue > 21) {
+			// 	playerStackValue = playerStackValue - 10;
+			// }
+
+			// if (playerStack[6]['name'] === "A" && playerStackValue > 21) {
+			// 	playerStackValue = playerStackValue - 10;
+			// }
+				
+			playerCards.appendChild(playerSeventhCard);
+			playerSeventhCard.innerHTML = playerStack[6]['name'];
+
+			if (playerStackValue > 21) {
+				dealerWins();
+			}
+
+			else if ((playerStackValue === 21 && dealerStackValue !== 21) && dealerStackValue >= 17) {
+				dealerFirstCard.setAttribute('class', 'card');
+				dealerCards.removeChild(dealerFaceDownCard);
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				playerWins();
+			}
+
+			else if (playerStackValue === 21 && dealerStackValue === 21) {
+				dealerFirstCard.setAttribute('class', 'card');
+				dealerCards.removeChild(dealerFaceDownCard);
+				dealerCards.appendChild(dealerSecondCard);
+				dealerSecondCard.innerHTML = dealerStack[1]['name'];
+				drawOutcome();
+			}
+		}
+	}
+
+
+			if (dealerStackValue < 17) {
+
+			var removeForDealer3 = cards.pop();
+			dealerStack.push(removeForDealer3);
+			dealerCards.removeChild(dealerFaceDownCard);
+			dealerFirstCard.setAttribute('class', 'card');
+			dealerCards.appendChild(dealerSecondCard);
+			dealerSecondCard.innerHTML = dealerStack[1]['name'];
+			dealerCards.appendChild(dealerThirdCard);
+			dealerThirdCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+			
+			dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'];
+			if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
+					dealerStackValue = dealerStackValue - 10;
+			}
+
+			if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
+					dealerStackValue = dealerStackValue - 10;
+			}
+
+			if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
+					dealerStackValue = dealerStackValue - 10;
+			}
+			if (dealerStackValue > 21) {
+				playerWins();
+			}
+
+			if (dealerStackValue >= 17 && dealerStackValue <= 21) {
+				checkForWin();
+			}
+
+			if (dealerStackValue < 17) {
+				var removeForDealer3 = cards.pop();
+				dealerStack.push(removeForDealer3);
+				dealerCards.appendChild(dealerFourthCard);
+				dealerFourthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+				
+				dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'];
+				if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
+					dealerStackValue = dealerStackValue - 10;
+				}
+
+				if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
+					dealerStackValue = dealerStackValue - 10;
+				}
+
+				if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
+					dealerStackValue = dealerStackValue - 10;
+				}
+
+				if (dealerStack[3]['name'] === "A" && dealerStackValue > 21) {
+					dealerStackValue = dealerStackValue - 10;
+				}
+
+				if (dealerStackValue > 21) {
+					playerWins();
+				}
+
+				if (dealerStackValue >= 17 && dealerStackValue <= 21) {
+					checkForWin();
+				}
+
+				if (dealerStackValue < 17) {
+					var removeForDealer3 = cards.pop();
+					dealerStack.push(removeForDealer3);
+					dealerCards.appendChild(dealerFifthCard);
+					dealerFifthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+					
+					dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'];
+					if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
+						dealerStackValue = dealerStackValue - 10;
+					}
+
+					if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
+						dealerStackValue = dealerStackValue - 10;
+					}
+
+					if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
+						dealerStackValue = dealerStackValue - 10;
+					}
+
+					if (dealerStack[3]['name'] === "A" && dealerStackValue > 21) {
+						dealerStackValue = dealerStackValue - 10;
+					}
+
+					if (dealerStack[4]['name'] === "A" && dealerStackValue > 21) {
+						dealerStackValue = dealerStackValue - 10;
+					}
+
+					if (dealerStackValue > 21) {
+						playerWins();
+					}
+
+					if (dealerStackValue >= 17 && dealerStackValue <= 21) {
+						checkForWin();
+					}
+
+					if (dealerStackValue < 17) {
+						var removeForDealer3 = cards.pop();
+						dealerStack.push(removeForDealer3);
+						dealerCards.appendChild(dealerSixthCard);
+						dealerSixthCard.innerHTML = dealerStack[dealerStack.length - 1]['name'];
+						
+						dealerStackValue = dealerStack[0]['value'] + dealerStack[1]['value'] + dealerStack[2]['value'] + dealerStack[3]['value'] + dealerStack[4]['value'] + dealerStack[5]['value'];
+						if (dealerStack[0]['name'] === "A" && dealerStackValue > 21) {
+							dealerStackValue = dealerStackValue - 10;
+						}
+
+						if (dealerStack[1]['name'] === "A" && dealerStackValue > 21) {
+							dealerStackValue = dealerStackValue - 10;
+						}
+
+						if (dealerStack[2]['name'] === "A" && dealerStackValue > 21) {
+							dealerStackValue = dealerStackValue - 10;
+						}
+
+						if (dealerStack[3]['name'] === "A" && dealerStackValue > 21) {
+							dealerStackValue = dealerStackValue - 10;
+						}
+
+						if (dealerStack[4]['name'] === "A" && dealerStackValue > 21) {
+							dealerStackValue = dealerStackValue - 10;
+						}
+
+						if (dealerStack[5]['name'] === "A" && dealerStackValue > 21) {
+							dealerStackValue = dealerStackValue - 10;
+						}
+
+						if (dealerStackValue > 21) {
+							playerWins();
+						}
+
+
+						else {
+							checkForWin();
+						}
+					}
+
+				}
+			}
+		}
+*/
+
+
+
+
+
+
+
+
 
