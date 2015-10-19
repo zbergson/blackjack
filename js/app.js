@@ -324,8 +324,6 @@ var chooseHitOrStand = function() {
 	}
 
 	hitButton.onclick = function() {
-		pot.removeChild(doubleDown);
-		dealerCards.removeChild(insuranceButton);
 		var removeforPlayer3 = cards.pop();
 		playerStack.push(removeforPlayer3);
 
