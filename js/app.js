@@ -148,7 +148,7 @@ betForm.onsubmit = function(event) {
 			dealerCards.appendChild(dealerFaceDownCard);
 
 			pot.removeChild(dealButton);
-			pot.innerHTML = "Your current bet is $" + amount.value + ".";
+			pot.innerHTML = "Your current bet is $" + amount.value + ". Choose your move.";
 
 			hitButton.setAttribute('class', 'hit');
 			hitButton.innerHTML = "Hit";
