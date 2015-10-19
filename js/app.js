@@ -460,7 +460,6 @@ var chooseHitOrStand = function() {
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 var checkForWin = function() {
-	console.log('hi');
 	if (playerStackValue === 21) {
 		playerWins();
 	}
@@ -508,7 +507,6 @@ var playerWins = function() {
 	moneyLeft.innerHTML = "Money Left: " + playerOutcome;
 	playerMessage.innerHTML = "Player Wins!";
 	setTimeout(function(){
-		console.log('yoyoyho');
 		restart();
 	},2500);
 }
@@ -518,7 +516,6 @@ var playerWinsDouble = function() {
 	moneyLeft.innerHTML = "Money Left: " + playerOutcome;
 	playerMessage.innerHTML = "Player Wins Big!";
 	setTimeout(function(){
-		console.log('yoyoyho');
 		restart();
 	},2500);
 }
@@ -528,7 +525,6 @@ var dealerWinsDouble = function() {
 	moneyLeft.innerHTML = "Money Left: " + playerOutcome;
 	playerMessage.innerHTML = "Player Loses Big Time!";
 	setTimeout(function(){
-		console.log('yoyoyho');
 		restart();
 	},2500);
 }
@@ -538,7 +534,6 @@ var dealerWins = function() {
 	moneyLeft.innerHTML = "Money Left: " + playerOutcome;
 	playerMessage.innerHTML = "Player Loses!";
 	setTimeout(function(){
-		console.log('yoyoyho');
 		restart();
 	},2500);
 }
@@ -548,7 +543,6 @@ var drawOutcome = function() {
 	moneyLeft.innerHTML = "Money Left: " + playerOutcome;
 	playerMessage.innerHTML = "Draw!";
 	setTimeout(function(){
-		console.log('yoyoyho');
 		restart();
 	},2500);
 }
@@ -572,7 +566,6 @@ var restart = function() {
 			amount.value = "";
 			playerCards.innerHTML = "";
 			dealerCards.innerHTML = "";
-			console.log('howwwwdddyyyy');
 		},1500);
 		deckRunsOut();
 
@@ -607,8 +600,6 @@ var checkForAce = function() {
 	for (i = 0; i < playerStack.length; i++) {
 		if (playerStack[i]['name'] === "A" && playerStackValue > 21) {
 			playerStackValue = playerStackValue - 10;
-			console.log(playerStackValue);
-			console.log(playerStack[i]['name']);
 		}
 
 	}
@@ -618,8 +609,6 @@ var checkForAceDealer = function() {
 	for (i = 0; i < dealerStack.length; i++) {
 		if (dealerStack[i]['name'] === "A" && dealerStackValue > 21) {
 			dealerStackValue = dealerStackValue - 10;
-			console.log(dealerStackValue);
-			console.log(dealerStack[i]['name']);
 		}
 
 	}
