@@ -161,6 +161,7 @@ betForm.onsubmit = function(event) {
 			doubleDown.setAttribute('class', 'double-down');
 			doubleDown.innerHTML = "Double Down";
 			pot.appendChild(doubleDown);
+			doubleDown.setAttribute('style', 'display: inline-block');
 
 			if (playerStack[0]['name'] === "A" && playerStack[1]['name'] === "A") {
 				playerStack[1]['value'] = 1;
@@ -324,6 +325,7 @@ var chooseHitOrStand = function() {
 	}
 
 	hitButton.onclick = function() {
+		doubleDown.setAttribute('style', 'display: none');
 		var removeforPlayer3 = cards.pop();
 		playerStack.push(removeforPlayer3);
 
