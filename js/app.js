@@ -324,6 +324,7 @@ var chooseHitOrStand = function() {
 	}
 
 	hitButton.onclick = function() {
+		pot.removeChild(doubleDown);
 		var removeforPlayer3 = cards.pop();
 		playerStack.push(removeforPlayer3);
 
